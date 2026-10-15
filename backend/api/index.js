@@ -12,7 +12,10 @@ export default async function handler(req, res) {
     connection = undefined;
     res.statusCode = 500;
     res.setHeader("Content-Type", "application/json");
-    return res.end(JSON.stringify({ message: "Database connection error" }));
+    const reason = process.env.MONGO_URI ? error.name : "MONGO_URI is not set";
+    return res.end(
+      JSON.stringify({ message: "Database connection error", error: reason })
+    );
   }
 
   return app(req, res);
