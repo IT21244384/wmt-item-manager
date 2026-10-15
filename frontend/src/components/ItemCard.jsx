@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 
 function ItemCard({ item, onDelete }) {
+  const discount = item.discountPercentage || 0;
+  const finalPrice = (item.price * (1 - discount / 100)).toFixed(2);
+
   return (
     <div className="card">
       <img
@@ -11,6 +14,8 @@ function ItemCard({ item, onDelete }) {
       <h3>{item.name}</h3>
       <p><strong>Category:</strong> {item.category}</p>
       <p><strong>Price:</strong> ${item.price}</p>
+      <p><strong>Discount:</strong> {discount}%</p>
+      <p><strong>Price After Discount:</strong> ${finalPrice}</p>
       <p>{item.description}</p>
 
       <div className="card-actions">

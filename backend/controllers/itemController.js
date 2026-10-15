@@ -1,5 +1,29 @@
 import Item from "../models/Item.js";
 
+const ITEM_FIELDS = [
+  "name",
+  "category",
+  "price",
+  "discountPercentage",
+  "description",
+  "imageUrl",
+];
+
+// Keep only the item fields and store an empty discount as 0
+const getItemData = (body) => {
+  const data = {};
+
+  ITEM_FIELDS.forEach((field) => {
+    if (body[field] !== undefined) data[field] = body[field];
+  });
+
+  if (data.discountPercentage === "" || data.discountPercentage === null) {
+    data.discountPercentage = 0;
+  }
+
+  return data;
+};
+
 export const getItems = async (req, res) => {
   try {
     const items = await Item.find().sort({ createdAt: -1 });
@@ -25,7 +49,7 @@ export const getItemById = async (req, res) => {
 
 export const createItem = async (req, res) => {
   try {
-    const newItem = await Item.create(req.body);
+    const newItem = await Item.create(getItemData(req.body));
     res.status(201).json(newItem);
   } catch (error) {
     res.status(400).json({
@@ -37,10 +61,14 @@ export const createItem = async (req, res) => {
 
 export const updateItem = async (req, res) => {
   try {
-    const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedItem = await Item.findByIdAndUpdate(
+      req.params.id,
+      getItemData(req.body),
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     if (!updatedItem) {
       return res.status(404).json({ message: "Item not found" });
