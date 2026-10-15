@@ -4,6 +4,8 @@ MERN item manager with a Discount Percentage field, deployed as a separate front
 
 - **Name:** Abisheak S
 - **Student ID:** IT21244384
+- **Frontend:** https://wmt-item-manager-j5mz.vercel.app
+- **Backend:** https://wmt-item-manager-topaz.vercel.app
 
 ## Screenshots
 
